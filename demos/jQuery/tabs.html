@@ -58,6 +58,7 @@
       align-items: center;
     }
   </style>
+  <script src="../../jquery-3.3.1.js"></script>
 </head>
 
 <body>
@@ -73,6 +74,47 @@
       </ol>
     </div>
   </div>
+
+  <script>
+    class Tabs {
+      constructor(options) {
+        let defaultOption = {
+          element: '',
+          activeName: 'active',
+          navSelector: '[data-role=tabs-nav]',
+          panesSelector: '[data-role=tabs-panes]',
+        }
+        this.options = Object.assign(defaultOption, options)
+        this.checkOptions().bindEvents().setDefaultTabs()
+      }
+      checkOptions() {
+        if (!this.options.element) {
+          throw new Error("Element is required!")
+        }
+        return this
+      }
+      bindEvents() {
+        $(this.options.element).on('click', `${this.options.navSelector}>li`,e => {
+          let $el = $(e.target)
+          let index = $el.index()
+          $(`${this.options.navSelector}>li`).removeClass(this.options.activeName).eq(index).addClass(this.options
+            .activeName)
+          $(`${this.options.panesSelector}>li`).removeClass(this.options.activeName).eq(index).addClass(this.options
+            .activeName)
+        })
+        return this
+      }
+
+      setDefaultTabs() {
+        $(`${this.options.navSelector}>li:first`).trigger('click')
+        $(`${this.options.panesSelector}>li:first`).trigger('click')
+        return this
+      }
+    }
+    new Tabs({
+      element: document.querySelector('.tabs')
+    })
+  </script>
 </body>
 
 </html>
