@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tabs</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    ul,
+    li {
+      list-style: none;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .wrapper {
+      width: 450px;
+      background: #F0EDE6;
+    }
+
+    .tabs ol:first-child {
+      display: flex;
+      background: #E0DACD;
+    }
+
+    .tabs ol:first-child li.active {
+      background: #F0EDE6;
+    }
+
+    .tabs ol:first-child li {
+      flex-grow: 1;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .tabs ol:nth-child(2) li {
+      display: none;
+      min-height: 10em;
+      border: 1px solid;
+    }
+
+    .tabs ol:nth-child(2) li.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="tabs">
+      <ol data-role="tabs-nav">
+        <li>tab-nav-1</li>
+        <li>tab-nav-2</li>
+      </ol>
+      <ol data-role="tabs-panes">
+        <li>1</li>
+        <li>2</li>
+      </ol>
+    </div>
+  </div>
+
+  <script src="../../libs/dom/index.js"></script>
+  <script src="../../libs/tabs/idnex.js"></script>
+  <script>
+    new Tabs({
+      element: document.querySelectorAll('.tabs')[0],
+    })
+  </script>
+</body>
+
+</html>
