@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Pager</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    ol,
+    li {
+      list-style: none;
+    }
+
+    body {
+      text-align: center;
+    }
+
+    .pages {
+      display: inline-flex;
+      padding: 1px;
+      margin: .5em 0;
+      background: linear-gradient(to bottom, #969696 0%, #c1c1c1 100%);
+      border-radius: 4px;
+      box-shadow: 0 1px 0 white;
+    }
+
+    .pages>nav {
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      background: #D4D4D4;
+      border-radius: 2px;
+      border-radius: 4px;
+      box-shadow: inset 0 0 3px hsla(0, 0%, 0%, 0.1);
+    }
+
+    nav>ol[data-role="pageNumbers"] {
+      display: flex;
+    }
+
+    nav>ol[data-role="pageNumbers"]>li,
+    nav>button {
+      cursor: pointer;
+      padding: 0 .3em;
+      border: none;
+      min-width: 1.4em;
+      line-height: 2em;
+      text-align: center;
+      background: linear-gradient(to bottom, white 0%, #DEDEDE 100%);
+      margin: .2em;
+      border-radius: 4px;
+      box-shadow: 0 1px 1px hsla(0, 0%, 0%, 0.5), inset 0 1px 1px white;
+    }
+
+    .pages>nav>ol[data-role="pageNumbers"]>li.current {
+      background: linear-gradient(to bottom, #DADADA 0%, #D0D0D0 100%);
+      margin: .2em;
+    }
+  </style>
+  <script src="../../jquery-3.3.1.js"></script>
+</head>
+
+<body>
+  <div class="pages"></div>
+
+  <script>
+    class Pager {
+      constructor(options) {
+        let defaultOptions = {
+          element: null,
+          currentPage: 1,
+          maxPage: 100,
+          pageNumber: 10,
+          domRefs:{},
+          templates: {
+            first:'<button>首页</button>',
+            prev:'<button>上一页</button>',
+            next:'<button>下一页</button>',
+            last:'<button>末页</button>',
+          },
+        }
+        this.options = Object.assign({}, defaultOptions, options)
+        console.log(this.options)
+        this.checkOptions().initHtml().bindEvents()
+      }
+
+      checkOptions() {
+        if (!this.options.element) {
+          throw new Error("Elements is required!")
+        }
+        return this
+      }
+
+      initHtml() {
+        this.options.domRefs.nav = $('<nav></nav>')
+        this.options.domRefs.first = $(this.options.templates.first)
+        this.options.domRefs.prev = $(this.options.templates.prev)
+        this.options.domRefs.next = $(this.options.templates.next)
+        this.options.domRefs.last = $(this.options.templates.last)
+
+        this._checkButtons()
+        this.options.domRefs.numbers = this.createNumbers()
+
+        this.options.domRefs.nav.append(this.options.domRefs.first,this.options.domRefs.prev,this.options.domRefs.next,this.options.domRefs.last)
+        $(this.options.element).append(this.options.domRefs.nav)
+        return this
+      }
+
+      _checkButtons(){
+        
+      }
+
+      createNumbers(){
+        
+      }
+
+      bindEvents(){
+        
+      }
+    }
+
+    new Pager({
+      element: document.querySelector('.pages')
+    })
+  </script>
+</body>
+
+</html>
