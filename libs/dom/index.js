@@ -28,13 +28,33 @@ let dom = {
     element.addEventListener(eventType, e => {
       let el = e.target
       while (!el.matches(selector)) {
-        if(el === element){
+        if (el === element) {
           el = null
           break
         }
         el = el.parentNode
       }
-      el && fn.call(el,e,el)
+      el && fn.call(el, e, el)
     })
+  },
+
+  create: function (html, children) {
+    let template = document.createElement('template')
+    template.innerHTML = html.trim()
+    let node = template.content.firstChild
+    if (children) {
+      dom.append(node, children)
+    }
+    return node
+  },
+
+  append: function (node, children) {
+    if (children.length === undefined) {
+      children = [children]
+    }
+    for (let i = 0; i < children.length; i++) {
+      parent.appendChild(children[i])
+    }
+    return parent
   },
 }
