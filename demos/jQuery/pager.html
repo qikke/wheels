@@ -76,13 +76,13 @@
           element: null,
           currentPage: 1,
           maxPage: 100,
-          pageNumber: 10,
-          domRefs:{},
+          buttonCount: 10,
+          domRefs: {},
           templates: {
-            first:'<button>首页</button>',
-            prev:'<button>上一页</button>',
-            next:'<button>下一页</button>',
-            last:'<button>末页</button>',
+            first: '<button>首页</button>',
+            prev: '<button>上一页</button>',
+            next: '<button>下一页</button>',
+            last: '<button>末页</button>',
           },
         }
         this.options = Object.assign({}, defaultOptions, options)
@@ -107,21 +107,87 @@
         this._checkButtons()
         this.options.domRefs.numbers = this.createNumbers()
 
-        this.options.domRefs.nav.append(this.options.domRefs.first,this.options.domRefs.prev,this.options.domRefs.next,this.options.domRefs.last)
+        this.options.domRefs.nav.append(this.options.domRefs.first, this.options.domRefs.prev, this.options.domRefs.numbers,
+          this.options.domRefs.next,
+          this.options.domRefs.last)
         $(this.options.element).append(this.options.domRefs.nav)
         return this
       }
 
-      _checkButtons(){
-        
+      _checkButtons() {
+        let currentPage = this.options.currentPage
+        if (!currentPage || currentPage === 1) {
+          this.options.domRefs.first.attr('disabled', '')
+          this.options.domRefs.prev.attr('disabled', '')
+        } else {
+          this.options.domRefs.first.removeAttr('disabled')
+          this.options.domRefs.prev.removeAttr('disabled')
+        }
+        if (!currentPage || currentPage === this.options.maxPage) {
+          this.options.domRefs.next.attr('disabled', '')
+          this.options.domRefs.last.attr('disabled', '')
+        } else {
+          this.options.domRefs.next.removeAttr('disabled')
+          this.options.domRefs.last.removeAttr('disabled')
+        }
       }
 
-      createNumbers(){
-        
+      createNumbers() {
+        let {
+          currentPage,
+          buttonCount,
+          maxPage
+        } = this.options
+    
+        let start1 = Math.max(currentPage - Math.round(buttonCount / 2), 1)
+        let end1 = Math.min(start1 + buttonCount - 1, maxPage) 
+        let end2 = Math.min(currentPage + Math.round(buttonCount / 2) - 1, maxPage)
+        let start2 = Math.max(end2 - buttonCount + 1, 1)
+        let start = Math.min(start1, start2)
+        let end = Math.max(end1, end2)
+
+        let ol = $('<ol data-role=pageNumbers></ol>')
+        for (let i = start; i <= end; i++) {
+          let li = $(`<li data-page="${i}">${i}</li>`)
+          if (i == currentPage) {
+            li.addClass('current')
+          }
+          ol.append(li)
+        }
+        return ol
       }
 
-      bindEvents(){
-        
+      bindEvents() {
+        $(this.options.element).on('click', '[data-role="pageNumbers"]>li', e => {
+          this.goToPage(e.target.dataset.page)
+        })
+        this.options.domRefs.next.on('click', e => {
+          this.goToPage(this.options.currentPage+1)
+        })
+        this.options.domRefs.prev.on('click', e => {
+          this.goToPage(this.options.currentPage-1)
+        })
+        this.options.domRefs.first.on('click', e => {
+          this.goToPage(1)
+        })
+        this.options.domRefs.last.on('click', e => {
+          this.goToPage(this.options.maxPage)
+        })
+      }
+
+      goToPage(pageNumber) {
+        if (!pageNumber || pageNumber > this.options.totalPage || pageNumber === this.options.currentPage) {
+          return
+        }
+        this.options.currentPage = Number(pageNumber)
+        this.rerender()
+      }
+
+      rerender() {
+        this._checkButtons()
+        let newNumbers = this.createNumbers()
+        this.options.domRefs.numbers.replaceWith(newNumbers)
+        this.options.domRefs.numbers = newNumbers
       }
     }
 

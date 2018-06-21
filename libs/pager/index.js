@@ -86,11 +86,17 @@ class Pager {
       totalPage
     } = this.options
     let start1 = Math.max(currentPage - Math.round(buttonCount / 2), 1)
+    console.log(start1)
     let end1 = Math.min(start1 + buttonCount - 1, totalPage)
+    console.log(end1)
     let end2 = Math.min(currentPage + Math.round(buttonCount / 2) - 1, totalPage)
+    console.log(end2)
     let start2 = Math.max(end2 - buttonCount + 1, 1)
+    console.log(start2)
     let start = Math.min(start1, start2)
+    console.log(start)
     let end = Math.max(end1, end2)
+    console.log(end)
 
     let ol = dom.create(this.options.templates.pageNumbers)
     for (let i = start; i <= end; i++) {
@@ -115,6 +121,7 @@ class Pager {
   rerender() {
     this._checkButtons()
     let newNumbers = this._createNumbers()
+    console.log(newNumbers)
     let oldNumbers = this.domRefs.numbers
     oldNumbers.parentNode.replaceChild(newNumbers, oldNumbers)
     this.domRefs.numbers = newNumbers
